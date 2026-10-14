@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Missing Person Alert</title>
+  <style>
+    :root {
+      --red: #d92027;
+      --dark: #14181f;
+      --light: #ffffff;
+      --muted: #6b7280;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #f3f4f6;
+      color: var(--dark);
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .alert {
+      width: min(720px, 100%);
+      background: var(--light);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, .12);
+      border-top: 8px solid var(--red);
+    }
+
+    .alert-header {
+      background: var(--red);
+      color: white;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .alert-header h1 {
+      margin: 0;
+      font-size: clamp(20px, 3vw, 28px);
+      letter-spacing: .5px;
+    }
+
+    .pulse {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: white;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,255,255,.8); }
+      100% { box-shadow: 0 0 0 16px rgba(255,255,255,0); }
+    }
+
+    .alert-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    .photo {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 3px solid #e5e7eb;
+    }
+
+    .details h2 {
+      margin: 0 0 4px;
+      font-size: 26px;
+    }
+
+    .age {
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .info {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .info strong {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+
+    button:hover { transform: translateY(-2px); }
+
+    .call {
+      background: var(--red);
+      color: white;
+    }
+
+    .share {
+      background: var(--dark);
+      color: white;
+    }
+
+    .report {
+      background: #e5e7eb;
+      color: var(--dark);
+    }
+
+    .alert-footer {
+      padding: 14px 24px;
+      background: #fef2f2;
+      color: #7f1d1d;
+      font-size: 14px;
+      border-top: 1px solid #fecaca;
+    }
+
+    @media (max-width: 560px) {
+      .alert-body {
+        grid-template-columns: 1fr;
+      }
+
+      .photo {
+        max-width: 240px;
+        margin: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <article class="alert" id="missingAlert">
+    <header class="alert-header">
+      <h1>MISSING PERSON ALERT</h1>
+      <span class="pulse" aria-hidden="true"></span>
+    </header>
+
+    <div class="alert-body">
+      <img
+        id="personPhoto"
+        class="photo"
+        src="c:\Users\USER\Downloads\WhatsApp Image 2026-10-10 at 08.00.56.jpeg"
+        alt="Photo of missing person"
+      />
+
+      <div class="details">
+        <h2 id="personName">SSEMPALA DICKSON</h2>
+        <p class="age" id="personAge">Age 23</p>
+
+        <div class="info-grid">
+          <div class="info">
+            <strong>Last seen</strong>
+            <span id="lastSeen">Kampala, Uganda</span>
+          </div>
+          <div class="info">
+            <strong>Date</strong>
+            <span id="lastSeenDate">October 11, 2026</span>
+          </div>
+          <div class="info">
+            <strong>Clothing</strong>
+            <span id="clothing">Checked shirt, black bag</span>
+          </div>
+          <div class="info">
+            <strong>Contact</strong>
+            <span id="contact">+256 758387804</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="call" onclick="callContact()">Call Now</button>
+          <button class="share" onclick="shareAlert()">Share Alert</button>
+          <button class="report" onclick="reportSighting()">Report Sighting</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="alert-footer">
+      If you have any information, contact the family or local authorities immediately. Do not share unverified information.
+    </footer>
+  </article>
+
+  <script>
+    const alertData = {
+      name: "SSEMPALA DICKSON",
+      age: 23,
+      lastSeen: "Kampala, Uganda",
+      date: "October 11, 2026",
+      clothing: "Checked shirt, black bag",
+      phone: "+256758387804"
+    };
+
+    function renderAlert(data) {
+      document.getElementById("personName").textContent = data.name;
+      document.getElementById("personAge").textContent = `Age ${data.age}`;
+      document.getElementById("lastSeen").textContent = data.lastSeen;
+      document.getElementById("lastSeenDate").textContent = data.date;
+      document.getElementById("clothing").textContent = data.clothing;
+      document.getElementById("contact").textContent = data.phone;
+    }
+
+    function callContact() {
+      window.location.href = `tel:${alertData.phone}`;
+    }
+
+    async function shareAlert() {
+      const shareData = {
+        title: `MISSING: ${alertData.name}`,
+        text: `${alertData.name}, age ${alertData.age}, was last seen in ${alertData.lastSeen} on ${alertData.date}. Clothing: ${alertData.clothing}. Contact: ${alertData.phone}`,
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          console.log("Sharing cancelled or failed.");
+        }
+      } else {
+        await navigator.clipboard.writeText(
+          `${shareData.title}\n${shareData.text}`
+        );
+        alert("Alert details copied. Paste them to share.");
+      }
+    }
+
+    function reportSighting() {
+      const location = prompt("Where did you see this person?");
+      if (!location) return;
+
+      const sighting = {
+        person: alertData.name,
+        location,
+        reportedAt: new Date().toISOString()
+      };
+
+      console.log("Sighting submitted:", sighting);
+      alert("Thank you. Your sighting has been recorded for review.");
+    }
+
+    renderAlert(alertData);
+  </script>
+
+</body>
+</html>
